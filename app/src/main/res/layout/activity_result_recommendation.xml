@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ResultRecommendationActivity">
+
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="342dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiSoil">
+
+        <!-- Masukkan Data Melalui IoT Section -->
+        <TextView
+            android:id="@+id/tv_masukkan_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Rekomendasi Tanam"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Berpotensi LAYAK Tanam jika ditanam tanaman"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BAWANG MERAH"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/bawang" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/text_rekomendasi"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnHome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Kembali ke Halaman Utama"
+        android:background="@drawable/rounded_bg_button"
+        app:layout_constraintEnd_toEndOf="@+id/container"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/container" />
+
+    <TextView
+        android:id="@+id/tvNilaiNirogen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/btnHome"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/tvNilaiPhosporous"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiNirogen"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiNirogen"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiNirogen" />
+
+    <TextView
+        android:id="@+id/tvNilaiPotassium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiPhosporous"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiPhosporous"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiPhosporous" />
+
+    <TextView
+        android:id="@+id/tvNilaiTemperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiPotassium"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiPotassium"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiPotassium" />
+
+    <TextView
+        android:id="@+id/tvNilaiHumidity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiTemperature"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiTemperature"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiTemperature" />
+
+    <TextView
+        android:id="@+id/tvNilaiPh"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiHumidity"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiHumidity"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiHumidity" />
+
+    <TextView
+        android:id="@+id/tvNilaiRainfall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiPh"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiPh"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiPh" />
+
+    <TextView
+        android:id="@+id/tvNilaiSoil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/tvNilaiRainfall"
+        app:layout_constraintStart_toStartOf="@+id/tvNilaiRainfall"
+        app:layout_constraintTop_toBottomOf="@+id/tvNilaiRainfall" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

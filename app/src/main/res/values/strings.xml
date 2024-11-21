@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Rekomendasi Tanam</string>
+    <string name="unsur_hara_nitogen">Unsur Hara Nitrogen</string>
+    <string name="unsur_hara_fosfor">Unsur Hara Fosfor</string>
+    <string name="unsur_hara_kalium">Unsur Hara Kalium</string>
+    <string name="temperature_suhu">Temperature (Suhu)</string>
+    <string name="humidity_kelembaban">Humidity (Kelembaban)</string>
+    <string name="ph_tanah">pH Tanah</string>
+    <string name="rainfall_curah_hujan">Rainfall (Curah Hujan)</string>
+    <string name="text_rekomendasi">Rekomendasi yang dihasilkan berdasarkan:</string>
+    <string-array name="soil_types">
+        <item>--Pilih Jenis Tanah yang Ada Di Lahan--</item>
+        <item>Berpasir</item>
+        <item>Lempung</item>
+        <item>Merah</item>
+        <item>Hitam</item>
+        <item>Tanah Liat</item>
+        <item>Tanah Kering</item>
+    </string-array>
+    <string name="default_soil_type_text">--Pilih Jenis Tanah yang Ada Di Lahan--</string>
+</resources>
