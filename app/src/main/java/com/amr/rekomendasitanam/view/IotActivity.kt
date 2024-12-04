@@ -1,11 +1,11 @@
-package com.amr.rekomendasitanam
-
+package com.amr.rekomendasitanam.view
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.amr.rekomendasitanam.databinding.ActivityIotBinding
-import com.amr.rekomendasitanam.view.RecommendationActivity
+import com.amr.rekomendasitanam.viewmodel.IotViewModel
 
 class IotActivity : AppCompatActivity() {
 
@@ -17,58 +17,27 @@ class IotActivity : AppCompatActivity() {
         binding = ActivityIotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        observeViewModel()
-        btnInput()
+        setupObservers()
+        btnMoveToRecommendation()
     }
 
-    private fun observeViewModel() {
-        viewModel.nitrogen.observe(this) { value ->
-            binding.tvNitrogen.text = value?.toString() ?: "-"
-        }
+    private fun setupObservers() {
+        viewModel.nitrogen.observe(this) { binding.tvNitrogen.text = it.toString() }
+        viewModel.phosporus.observe(this) { binding.tvPhosporous.text = it.toString() }
+        viewModel.kalium.observe(this) { binding.tvPotassium.text = it.toString() }
+        viewModel.suhu.observe(this) { binding.tvTemperature.text = it.toString() }
+        viewModel.kelembaban.observe(this) { binding.tvHumidity.text = it.toString() }
+        viewModel.rainfall.observe(this) { binding.tvRainfall.text = it.toString() }
+        viewModel.ph.observe(this) { binding.tvPH.text = it.toString() }
 
-        viewModel.phosporus.observe(this) { value ->
-            binding.tvPhosporous.text = value?.toString() ?: "-"
-        }
-
-        viewModel.kalium.observe(this) { value ->
-            binding.tvPotassium.text = value?.toString() ?: "-"
-        }
-
-        viewModel.kelembaban.observe(this) { value ->
-            binding.tvHumidity.text = value?.toString() ?: "-"
-        }
-
-        viewModel.rainfall.observe(this) { value ->
-            binding.tvRainfall.text = value?.toString() ?: "-"
-        }
-
-        viewModel.suhu.observe(this) { value ->
-            binding.tvTemperature.text = value?.toString() ?: "-"
-        }
-
-        viewModel.ph.observe(this) { value ->
-            binding.tvPH.text = value?.toString() ?: "-"
+        viewModel.error.observe(this) { errorMessage ->
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun btnInput() {
+    private fun btnMoveToRecommendation() {
         binding.btnRekomendasi.setOnClickListener {
-            val nitrogen = binding.tvNitrogen.text.toString().toInt()
-            val phosphorus = binding.tvPhosporous.text.toString().toInt()
-            val potassium = binding.tvPotassium.text.toString().toInt()
-            val temperature = binding.tvTemperature.text.toString().toFloat()
-            val humidity = binding.tvHumidity.text.toString().toFloat()
-            val rainfall = binding.tvRainfall.text.toString().toFloat()
-            val ph = binding.tvPH.text.toString().toFloat()
-            val intent = Intent(this, RecommendationActivity::class.java).apply {
-                putExtra("nitrogen", nitrogen)
-                putExtra("phosphorus", phosphorus)
-                putExtra("kalium", potassium)
-                putExtra("suhu_udara", temperature)
-                putExtra("kelembaban_udara", humidity)
-                putExtra("rainfall", rainfall)
-                putExtra("ph_tanah", ph)
-            }
+            val intent = Intent(this, RecommendationActivity::class.java)
             startActivity(intent)
         }
     }

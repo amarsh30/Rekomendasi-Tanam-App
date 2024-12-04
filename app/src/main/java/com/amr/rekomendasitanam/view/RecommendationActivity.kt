@@ -1,6 +1,5 @@
 package com.amr.rekomendasitanam.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,40 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import com.amr.rekomendasitanam.R
 import com.amr.rekomendasitanam.databinding.ActivityRecommendationBinding
 import com.amr.rekomendasitanam.model.remote.response.RecommendationRequest
+import com.amr.rekomendasitanam.viewmodel.IotViewModel
 import com.amr.rekomendasitanam.viewmodel.RecommendationViewModel
 
 class RecommendationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecommendationBinding
-    private val viewModel: RecommendationViewModel by viewModels()
+    private val iotViewModel: IotViewModel by viewModels() // ViewModel untuk data IoT
+    private val recommendationViewModel: RecommendationViewModel by viewModels() // ViewModel untuk prediksi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecommendationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getDataFirebase()
         setupSpinner()
         setupObservers()
         btnRecommendation()
-    }
-
-    private fun getDataFirebase(){
-        val nitrogen = intent.getIntExtra("nitrogen", 0)
-        val phosporous = intent.getIntExtra("phosphorus", 0)
-        val potassium = intent.getIntExtra("kalium", 0)
-        val temperature = intent.getFloatExtra("suhu_udara", 0f)
-        val humidity = intent.getFloatExtra("kelembaban_udara", 0f)
-        val rainfall = intent.getFloatExtra("rainfall", 0f)
-        val ph = intent.getFloatExtra("ph_tanah", 0f)
-
-        binding.edNitrogen.setText(nitrogen.toString())
-        binding.edPhosporous.setText(phosporous.toString())
-        binding.edPotassium.setText(potassium.toString())
-        binding.edTemperature.setText(temperature.toString())
-        binding.edHumidity.setText(humidity.toString())
-        binding.edRainfall.setText(rainfall.toString())
-        binding.edPh.setText(ph.toString())
     }
 
     private fun setupSpinner() {
@@ -67,22 +49,20 @@ class RecommendationActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.prediction.observe(this) { prediction ->
-            val intent = Intent(this, ResultRecommendationActivity::class.java).apply {
-                putExtra("prediction", prediction)
-                putExtra("Nitrogen", binding.edNitrogen.text.toString().toInt())
-                putExtra("Phosphorus", binding.edPhosporous.text.toString().toInt())
-                putExtra("Potassium", binding.edPotassium.text.toString().toInt())
-                putExtra("Temperature", binding.edTemperature.text.toString().toFloat())
-                putExtra("Humidity", binding.edHumidity.text.toString().toFloat())
-                putExtra("Rainfall", binding.edRainfall.text.toString().toFloat())
-                putExtra("pH", binding.edPh.text.toString().toFloat())
-                putExtra("SoilType", binding.spSoilType.tag as String)
-            }
-            startActivity(intent)
+        iotViewModel.nitrogen.observe(this) { binding.edNitrogen.setText(it.toString()) }
+        iotViewModel.phosporus.observe(this) { binding.edPhosporous.setText(it.toString()) }
+        iotViewModel.kalium.observe(this) { binding.edPotassium.setText(it.toString()) }
+        iotViewModel.suhu.observe(this) { binding.edTemperature.setText(it.toString()) }
+        iotViewModel.kelembaban.observe(this) { binding.edHumidity.setText(it.toString()) }
+        iotViewModel.rainfall.observe(this) { binding.edRainfall.setText(it.toString()) }
+        iotViewModel.ph.observe(this) { binding.edPh.setText(it.toString()) }
+
+        recommendationViewModel.prediction.observe(this) { prediction ->
+            Toast.makeText(this, "Hasil Prediksi: $prediction", Toast.LENGTH_SHORT).show()
+            // Lakukan aksi lain jika diperlukan
         }
 
-        viewModel.errorMessage.observe(this) { errorMessage ->
+        recommendationViewModel.errorMessage.observe(this) { errorMessage ->
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
@@ -95,31 +75,20 @@ class RecommendationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val nitrogenText = binding.edNitrogen.text.toString()
-            val phosporousText = binding.edPhosporous.text.toString()
-            val potassiumText = binding.edPotassium.text.toString()
-            val temperatureText = binding.edTemperature.text.toString()
-            val humidityText = binding.edHumidity.text.toString()
-            val rainfallText = binding.edRainfall.text.toString()
-            val phText = binding.edPh.text.toString()
+            val nitrogen = binding.edNitrogen.text.toString().toIntOrNull()
+            val phosphorus = binding.edPhosporous.text.toString().toIntOrNull()
+            val potassium = binding.edPotassium.text.toString().toIntOrNull()
+            val temperature = binding.edTemperature.text.toString().toDoubleOrNull()
+            val humidity = binding.edHumidity.text.toString().toDoubleOrNull()
+            val rainfall = binding.edRainfall.text.toString().toDoubleOrNull()
+            val ph = binding.edPh.text.toString().toDoubleOrNull()
 
-            if (nitrogenText.isEmpty() || phosporousText.isEmpty() || potassiumText.isEmpty() ||
-                temperatureText.isEmpty() || humidityText.isEmpty() || rainfallText.isEmpty() || phText.isEmpty()) {
-                Toast.makeText(this, "Semua field harus diisi.", Toast.LENGTH_SHORT).show()
+            if (nitrogen == null || phosphorus == null || potassium == null ||
+                temperature == null || humidity == null || rainfall == null || ph == null) {
+                Toast.makeText(this, "Semua field harus diisi dengan benar.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Konversi Text dari EditText ke tipe data yang sesuai
-            val nitrogen = nitrogenText.toInt()
-            val phosphorus = phosporousText.toInt()
-            val potassium = potassiumText.toInt()
-            val temperature = temperatureText.toDouble() // Ubah ke Double
-            val humidity = humidityText.toDouble() // Ubah ke Double
-            val rainfall = rainfallText.toDouble() // Ubah ke Double
-            val ph = phText.toDouble() // Ubah ke Double
-            val soilType = selectedSoilType
-
-            // Buat objek RecommendationRequest
             val recommendationRequest = RecommendationRequest(
                 Nitrogen = nitrogen,
                 Phosporous = phosphorus,
@@ -128,12 +97,10 @@ class RecommendationActivity : AppCompatActivity() {
                 humidity = humidity,
                 rainfall = rainfall,
                 ph = ph,
-                soil_type_encode = soilType
+                soil_type_encode = selectedSoilType
             )
 
-            // Panggil fungsi prediction di ViewModel
-            viewModel.prediction(recommendationRequest)
-
+            recommendationViewModel.prediction(recommendationRequest)
         }
     }
 }
